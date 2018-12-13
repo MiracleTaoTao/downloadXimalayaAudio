@@ -69,4 +69,15 @@ public class AudioBean {
     public void setTotalPage(int totalPage) {
         this.totalPage = totalPage;
     }
+
+    @Override
+    public String toString() {
+        return "AudioBean{" +
+                "albumId='" + albumId + '\'' +
+                ", trackTotalCount=" + trackTotalCount +
+                ", pageNum=" + pageNum +
+                ", pageSize=" + pageSize +
+                ", totalPage=" + totalPage +
+                '}';
+    }
 }

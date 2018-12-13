@@ -14,7 +14,6 @@ import java.net.URL;
  */
 public class AudioDealUtil {
 
-
     /**
      * 初始化音频列表
      * @param url
@@ -24,6 +23,7 @@ public class AudioDealUtil {
     public static AudioBean initBean(String url,String param){
         AudioBean audioBean = new AudioBean();
 
+        //获取数据
         String result = HttpUtil.sendGet(url,param);
         JSONObject resultJson = JSONObject.fromObject(result);
         JSONObject dataJson = resultJson.getJSONObject("data");
@@ -48,6 +48,11 @@ public class AudioDealUtil {
         return audioBean;
     }
 
+    /**
+     * 初始化音频下载列表数据
+     * @param url
+     * @param audioBean
+     */
     public static void initDownloadAudio(String url,AudioBean audioBean){
         ////https://www.ximalaya.com/revision/play/album?
         int pageNum = audioBean.getPageNum();
@@ -69,6 +74,12 @@ public class AudioDealUtil {
 
     }
 
+    /**
+     * 下载音频
+     * @param downloadUrl
+     * @param targetUrl
+     * @param fileName
+     */
     public static void downloadAudio(String downloadUrl,String targetUrl,String fileName){
 
         try {
