@@ -30,6 +30,11 @@ public class AudioBean {
      */
     private int totalPage;
 
+    /**
+     * 专辑名称
+     */
+    private String albumTitle;
+
     public String getAlbumId() {
         return albumId;
     }
@@ -70,6 +75,14 @@ public class AudioBean {
         this.totalPage = totalPage;
     }
 
+    public String getAlbumTitle() {
+        return albumTitle;
+    }
+
+    public void setAlbumTitle(String albumTitle) {
+        this.albumTitle = albumTitle;
+    }
+
     @Override
     public String toString() {
         return "AudioBean{" +
@@ -78,6 +91,7 @@ public class AudioBean {
                 ", pageNum=" + pageNum +
                 ", pageSize=" + pageSize +
                 ", totalPage=" + totalPage +
+                ", albumTitle='" + albumTitle + '\'' +
                 '}';
     }
 }

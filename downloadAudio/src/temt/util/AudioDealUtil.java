@@ -4,6 +4,7 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import temt.bean.AudioBean;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.net.URL;
@@ -28,12 +29,15 @@ public class AudioDealUtil {
         JSONObject resultJson = JSONObject.fromObject(result);
         JSONObject dataJson = resultJson.getJSONObject("data");
         String albumId = dataJson.getString("albumId");
+        JSONObject mainInfoJson = dataJson.getJSONObject("mainInfo");
 
         //获取专辑信息
         JSONObject tracksInfoJson = dataJson.getJSONObject("tracksInfo");
         int pageNum = tracksInfoJson.getInt("pageNum");
         int pageSize = tracksInfoJson.getInt("pageSize");
         int trackTotalCount = tracksInfoJson.getInt("trackTotalCount");
+
+        String albumTitle = mainInfoJson.getString("albumTitle");
 
         //总共页码
         int totalPage = trackTotalCount/pageSize + 1;
@@ -44,6 +48,7 @@ public class AudioDealUtil {
         audioBean.setPageNum(pageNum);
         audioBean.setTotalPage(totalPage);
         audioBean.setPageSize(pageSize);
+        audioBean.setAlbumTitle(albumTitle);
 
         return audioBean;
     }
@@ -68,7 +73,7 @@ public class AudioDealUtil {
                 JSONObject object = tracksAudioPlayJSONArray.getJSONObject(i);
                 String trackName = object.getString("trackName");
                 String downloadUrl = object.getString("src");
-                downloadAudio(downloadUrl,"D://download//",trackName);
+                downloadAudio(downloadUrl,"D://download//",trackName,audioBean.getAlbumTitle());
             }
         }
 
@@ -80,12 +85,16 @@ public class AudioDealUtil {
      * @param targetUrl
      * @param fileName
      */
-    public static void downloadAudio(String downloadUrl,String targetUrl,String fileName){
+    public static void downloadAudio(String downloadUrl,String targetUrl,String fileName,String albumTitle){
 
         try {
             // 创建连接、输入流
             InputStream in = new URL(downloadUrl).openConnection().getInputStream();
-            String str = targetUrl+fileName+".mp3";
+            String str = targetUrl+albumTitle+"//"+fileName+".mp3";
+            File file = new File(targetUrl+albumTitle);
+            if(!file.exists()){
+                file.mkdir();
+            }
             FileOutputStream f = new FileOutputStream(str);
             byte[] bufferByte = new byte[1024]; // 接收缓存
             int len;
