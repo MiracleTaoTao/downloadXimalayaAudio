@@ -18,7 +18,7 @@ import temt.util.AudioDealUtil;
         //
         AudioDealUtil.initDownloadAudio("https://www.ximalaya.com/revision/play/album",
                 audioBean,
-                "D://download777//hello//");
+                "D://download//");
 
     }
 }
