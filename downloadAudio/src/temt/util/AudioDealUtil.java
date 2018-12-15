@@ -58,7 +58,7 @@ public class AudioDealUtil {
      * @param url
      * @param audioBean
      */
-    public static void initDownloadAudio(String url,AudioBean audioBean){
+    public static void initDownloadAudio(String url,AudioBean audioBean,String targetUrl){
         ////https://www.ximalaya.com/revision/play/album?
         int pageNum = audioBean.getPageNum();
         for(int j = 0 ; j < audioBean.getTotalPage() ; j++){
@@ -73,7 +73,7 @@ public class AudioDealUtil {
                 JSONObject object = tracksAudioPlayJSONArray.getJSONObject(i);
                 String trackName = object.getString("trackName");
                 String downloadUrl = object.getString("src");
-                downloadAudio(downloadUrl,"D://download//",trackName,audioBean.getAlbumTitle());
+                downloadAudio(downloadUrl,targetUrl,trackName,audioBean.getAlbumTitle());
             }
         }
 
@@ -88,13 +88,15 @@ public class AudioDealUtil {
     public static void downloadAudio(String downloadUrl,String targetUrl,String fileName,String albumTitle){
 
         try {
-            // 创建连接、输入流
-            InputStream in = new URL(downloadUrl).openConnection().getInputStream();
             String str = targetUrl+albumTitle+"//"+fileName+".mp3";
+
             File file = new File(targetUrl+albumTitle);
             if(!file.exists()){
-                file.mkdir();
+                file.mkdirs();
             }
+            // 创建连接、输入流
+            InputStream in = new URL(downloadUrl).openConnection().getInputStream();
+
             FileOutputStream f = new FileOutputStream(str);
             byte[] bufferByte = new byte[1024]; // 接收缓存
             int len;

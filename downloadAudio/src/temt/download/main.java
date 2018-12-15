@@ -6,8 +6,7 @@ import temt.util.AudioDealUtil;
 /**
  * @author temt
  * @time 2018年12月13日21:45:34
- */
-public class main {
+ */public class main {
 
     public static void main(String[] args){
 
@@ -16,7 +15,9 @@ public class main {
                 "https://www.ximalaya.com/revision/album",
                 "albumId=3127907");
 
-        AudioDealUtil.initDownloadAudio("https://www.ximalaya.com/revision/play/album",audioBean);
+        AudioDealUtil.initDownloadAudio("https://www.ximalaya.com/revision/play/album",
+                audioBean,
+                "D://download777//hello//");
 
     }
 }
