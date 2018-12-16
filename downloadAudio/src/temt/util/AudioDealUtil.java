@@ -37,6 +37,7 @@ public class AudioDealUtil {
         int pageSize = tracksInfoJson.getInt("pageSize");
         int trackTotalCount = tracksInfoJson.getInt("trackTotalCount");
 
+        //专辑名称
         String albumTitle = mainInfoJson.getString("albumTitle");
 
         //总共页码
@@ -59,9 +60,10 @@ public class AudioDealUtil {
      * @param audioBean
      */
     public static void initDownloadAudio(String url,AudioBean audioBean,String targetUrl){
-        ////https://www.ximalaya.com/revision/play/album?
+
         int pageNum = audioBean.getPageNum();
         for(int j = 0 ; j < audioBean.getTotalPage() ; j++){
+            //参数
             String param = "albumId="+audioBean.getAlbumId()+"&pageNum="+(j+1)+"&sort=-1&pageSize="+audioBean.getPageSize();
             String result = HttpUtil.sendGet(url,param);
 
