@@ -58,24 +58,34 @@ public class AudioDealUtil {
      * 初始化音频下载列表数据
      * @param url
      * @param audioBean
+     * @throws InterruptedException 
      */
-    public static void initDownloadAudio(String url,AudioBean audioBean,String targetUrl){
+    public static void initDownloadAudio(String url,AudioBean audioBean,String targetUrl) throws InterruptedException{
 
-        int pageNum = audioBean.getPageNum();
+        int trackTotalCount = audioBean.getTrackTotalCount();
+        int count = 0;
         for(int j = 0 ; j < audioBean.getTotalPage() ; j++){
             //参数
-            String param = "albumId="+audioBean.getAlbumId()+"&pageNum="+(j+1)+"&sort=-1&pageSize="+audioBean.getPageSize();
+            String param = "albumId="+audioBean.getAlbumId()+"&pageNum="+(j+1)+"&sort=-1";
             String result = HttpUtil.sendGet(url,param);
 
             JSONObject resultJson = JSONObject.fromObject(result);
             JSONObject dataJson = resultJson.getJSONObject("data");
 
-            JSONArray tracksAudioPlayJSONArray = dataJson.getJSONArray("tracksAudioPlay");
+            JSONArray tracksAudioPlayJSONArray = dataJson.getJSONArray("tracks");
             for(int i = 0 ; i < tracksAudioPlayJSONArray.size() ; i++){
                 JSONObject object = tracksAudioPlayJSONArray.getJSONObject(i);
-                String trackName = object.getString("trackName");
-                String downloadUrl = object.getString("src");
+                String trackName = object.getString("title");
+                String trackId = object.getString("trackId");
+                String audioFinal = HttpUtil.sendGet("https://www.ximalaya.com/revision/play/v1/audio","id="+trackId+"&ptype=1");
+                JSONObject audioFinalJson = JSONObject.fromObject(audioFinal).getJSONObject("data");
+                String downloadUrl = audioFinalJson.getString("src");
+
+				Thread.sleep(100L);
+
                 downloadAudio(downloadUrl,targetUrl,trackName,audioBean.getAlbumTitle());
+                count++;
+                System.out.println("还剩"+(trackTotalCount-count)+"条");
             }
         }
 
@@ -90,6 +100,7 @@ public class AudioDealUtil {
     public static void downloadAudio(String downloadUrl,String targetUrl,String fileName,String albumTitle){
 
         try {
+        	fileName = dealFileName(fileName);
             String str = targetUrl+albumTitle+"//"+fileName+".mp3";
 
             File file = new File(targetUrl+albumTitle);
@@ -111,5 +122,19 @@ public class AudioDealUtil {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    
+    /**
+     * 特殊字符处理
+     * @time 2019年12月29日14:26:32
+     * @param fileName
+     * @return
+     */
+    private static String dealFileName(String fileName){
+    	//\/:*?<>|
+    	String regEx="[/\\/:*?<>|]";
+    	
+    	fileName = fileName.replaceAll(regEx,"");//不想保留原来的字符串可以直接写成 “str = str.replaceAll(regEX,aa);”
+    	return fileName;
     }
 }
