@@ -24,7 +24,7 @@ public class AudioDealUtil {
     public static AudioBean initBean(String url,String param){
         AudioBean audioBean = new AudioBean();
 
-        //获取数据
+        //获取数据 
         String result = HttpUtil.sendGet(url,param);
         JSONObject resultJson = JSONObject.fromObject(result);
         JSONObject dataJson = resultJson.getJSONObject("data");
@@ -81,7 +81,7 @@ public class AudioDealUtil {
                 JSONObject audioFinalJson = JSONObject.fromObject(audioFinal).getJSONObject("data");
                 String downloadUrl = audioFinalJson.getString("src");
 
-				Thread.sleep(100L);
+//				Thread.sleep(100L);
 
                 downloadAudio(downloadUrl,targetUrl,trackName,audioBean.getAlbumTitle());
                 count++;
