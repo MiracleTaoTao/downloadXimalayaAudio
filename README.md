@@ -10,3 +10,8 @@ java实现爬取喜马拉雅音频文件
 
 
 
+文章
+
+- [Java爬取喜马拉雅非付费音频【优化】](https://blog.csdn.net/m0_37344350/article/details/103757033)
+- [Java爬取喜马拉雅非付费音频](https://blog.csdn.net/m0_37344350/article/details/85947217)
+
